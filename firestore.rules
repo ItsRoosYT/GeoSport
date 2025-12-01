@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Rules for activities collection
+    match /activities/{activityId} {
+      // Anyone can read activities
+      allow read: if true;
+      
+      // Only authenticated users can create activities
+      allow create: if request.auth != null;
+      
+      // Only the creator (host) can update or delete
+      allow update, delete: if request.auth != null && 
+        (request.auth.uid == resource.data.host.id || 
+         request.auth.uid == resource.data.createdBy);
+    }
+    
+    // Rules for chat messages under activities
+    match /activities/{activityId}/messages/{messageId} {
+      // Only members of the activity can read messages
+      allow read: if request.auth != null;
+      
+      // Only authenticated users can create messages
+      allow create: if request.auth != null && 
+        request.resource.data.senderId == request.auth.uid;
+      
+      // Only the sender can delete their own messages
+      allow delete: if request.auth != null && 
+        request.auth.uid == resource.data.senderId;
+    }
+    
+    // Rules for user profiles
+    match /users/{userId} {
+      // Users can read their own profile
+      allow read: if request.auth != null && 
+        (request.auth.uid == userId || true);
+      
+      // Users can only write to their own profile
+      allow write: if request.auth != null && 
+        request.auth.uid == userId;
+    }
+    
+    // Default deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

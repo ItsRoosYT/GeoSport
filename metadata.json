@@ -1,0 +1,8 @@
+{
+  "name": "GeoSporty",
+  "description": "En social aktivitetsapplikation för en aktiv livsstil. Hitta träningskompisar och aktiviteter i ditt närområde.",
+  "requestFramePermissions": [
+    "geolocation",
+    "microphone"
+  ]
+}
