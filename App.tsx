@@ -17,8 +17,6 @@ import { LanguageProvider, useLanguage } from './components/LanguageContext';
 import { Map as MapIcon, List, Plus, Search, Trash2, Filter, Wrench, X, RefreshCw } from 'lucide-react';
 import { ActivityCategory, ViewMode, UserProfile, ChatMessage, JoinType, AuthStage, Participant, Activity, SkillLevel } from './types';
 import { GOTHENBURG_CENTER } from './constants';
-import { useFirebaseActivities } from './hooks/useFirebaseActivities';
-import { useFirebaseAuth } from './hooks/useFirebaseAuth';
 
 // Wrapper for Language Context
 export default function AppWrapper() {
@@ -31,11 +29,14 @@ export default function AppWrapper() {
 
 function App() {
   const { t } = useLanguage();
-  const { activities: firebaseActivities, loading: activitiesLoading, addActivity: addFirebaseActivity, deleteActivity: deleteFirebaseActivity } = useFirebaseActivities();
-    const { user: firebaseUser, loading: authLoading } = useFirebaseAuth();
+  // Use mock data instead of Firebase
+  const firebaseActivities = MOCK_ACTIVITIES;
+  const activitiesLoading = false;
+  const addFirebaseActivity = async (activity: any) => {};
+  const deleteFirebaseActivity = async (id: string) => {};
 
-  // Auth State
-    const [authStage, setAuthStage] = useState<AuthStage>('LOGIN');
+  // Auth State - Skip auth for now
+  const [authStage, setAuthStage] = useState<AuthStage>('APP');
   const [viewMode, setViewMode] = useState<ViewMode>('LIST');
   
   // Filter State
