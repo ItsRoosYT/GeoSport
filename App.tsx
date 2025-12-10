@@ -52,13 +52,6 @@ function App() {
     setActivities(firebaseActivities);
   }, [firebaseActivities]);
 
-    // Auto-login if Firebase auth is ready
-    React.useEffect(() => {
-        if (firebaseUser && !authLoading) {
-            setAuthStage('APP');
-        }
-    }, [firebaseUser, authLoading]);
-
   // Membership State
   const [joinedActivityIds, setJoinedActivityIds] = useState<Set<string>>(new Set());
   const [appliedActivityIds, setAppliedActivityIds] = useState<Set<string>>(new Set());
