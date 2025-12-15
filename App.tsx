@@ -17,6 +17,7 @@ import { LanguageProvider, useLanguage } from './components/LanguageContext';
 import { Map as MapIcon, List, Plus, Search, Trash2, Filter, Wrench, X, RefreshCw } from 'lucide-react';
 import { ActivityCategory, ViewMode, UserProfile, ChatMessage, JoinType, AuthStage, Participant, Activity, SkillLevel } from './types';
 import { GOTHENBURG_CENTER } from './constants';
+import { SplashScreen } from './components/SplashScreen';
 
 // Wrapper for Language Context
 export default function AppWrapper() {
@@ -34,6 +35,9 @@ function App() {
   const activitiesLoading = false;
   const addFirebaseActivity = async (activity: any) => {};
   const deleteFirebaseActivity = async (id: string) => {};
+
+  // Splash Screen State
+  const [showSplash, setShowSplash] = useState(true);
 
   // Auth State - Skip auth for now
   const [authStage, setAuthStage] = useState<AuthStage>('APP');
@@ -369,7 +373,9 @@ function App() {
   const resolvedFriends = Array.from(friends).map((id: string) => getUserById(id));
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20 md:pb-0 font-sans text-gray-900">
+    <>
+      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      <div className="min-h-screen bg-slate-50 pb-20 md:pb-0 font-sans text-gray-900">
       
       {/* Top Navigation */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
@@ -610,6 +616,7 @@ function App() {
             onChat={() => handleStartDirectChat(selectedUserId)}
         />
       )}
-    </div>
+      </div>
+    </>
   );
 }
